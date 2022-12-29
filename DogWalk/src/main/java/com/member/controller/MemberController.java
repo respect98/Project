@@ -152,6 +152,18 @@ public class MemberController {
 		return "redirect:/main";
 		
 	}
+	
+	 /* 메인페이지 로그아웃 */
+	@GetMapping("logout.do")
+    public String logoutMainGET(HttpServletRequest request) throws Exception{
+		  	log.info("logoutMainGET메서드 진입");
+	        
+	        HttpSession session = request.getSession();
+	        session.invalidate();
+	        
+	        return "redirect:/main";   
+    }
+ 
 
 }
 // end---------------------------------------------------------------------------------

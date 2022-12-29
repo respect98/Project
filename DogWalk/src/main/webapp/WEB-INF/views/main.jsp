@@ -35,6 +35,7 @@
                         <span>회원이름 : ${member.name}</span>
                         <span>회원닉네임 : ${member.nick}</span>
                         <span>회원아이디 : ${member.userid}</span>
+                     	<a href="/web/member/logout.do">로그아웃</a>
                     </div>
                 </c:if>
 			</div>
