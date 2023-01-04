@@ -32,6 +32,11 @@ public class MemberServiceImpl implements MemberService {
     public MemberVO memberLogin(MemberVO member) throws Exception {
         return this.membermapper.memberLogin(member);
     }
+    
+    @Override
+    public int updateMember(MemberVO member) throws Exception{
+    	return this.membermapper.updateMember(member);
+    }
  
 
 

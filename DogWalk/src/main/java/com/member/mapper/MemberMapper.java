@@ -11,4 +11,5 @@ public interface MemberMapper {
 	 
 	 MemberVO memberLogin(MemberVO member);//로그인
 	 
+	 int updateMember(MemberVO member);
 }

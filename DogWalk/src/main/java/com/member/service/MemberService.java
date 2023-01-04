@@ -12,5 +12,7 @@ public interface MemberService {
 	
 	/* 로그인 */
     public MemberVO memberLogin(MemberVO member) throws Exception;
+    
+    public int updateMember(MemberVO member) throws Exception;
 
 }
