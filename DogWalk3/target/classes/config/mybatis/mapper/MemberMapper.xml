@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.member.mapper.MemberMapper">
+	<insert id="MemberJoin" parameterType="Member">
+		<selectKey keyProperty="idx" resultType="int" order="BEFORE">
+			select members_seq.nextval from dual
+		</selectKey>
+		insert into members(idx,rrn2,name,userid,pwd,hp1,hp2,hp3,post,addr1,addr2,indate,
+		status,nick,rrn1,mail,snstype)
+		values(#{idx},#{rrn2},#{name},#{userid},#{pwd},#{hp1},#{hp2},#{hp3},#{post:VARCHAR},
+		#{addr1:VARCHAR},#{addr2:VARCHAR},SYSDATE,#{status},#{nick},#{rrn1},#{mail:VARCHAR},#{snstype:VARCHAR})
+	</insert>
+	
+	<select id="idCheck" resultType="int">
+  	
+  		select count(*) from members where userid = #{userid}
+  	
+  	</select>
+  	
+  	<select id="nickCheck" resultType="int">
+  	
+  		select count(*) from members where nick = #{nick}
+  	
+  	</select>
+  	
+  	<select id="memberLogin" resultType="Member">
+  		select * from members where userid=#{userid}
+		<!-- select * from members where userid=#{userid} and pwd=#{pwd} -->
+  	</select>
+  	
+  	<update id = "updateMember" parameterType="Member">
+        update members
+        set pwd=#{pwd}, hp1=#{hp1}, hp2=#{hp2}, hp3=#{hp3}, post=#{post},
+        addr1=#{addr1}, addr2=#{addr2}, nick=#{nick}, mail=#{mail}
+        where userid=#{userid}
+    </update>
+    
+    <select id="selectById" resultType="Member">
+		select * from members where userid=#{userid} 
+  	</select>
+  	<delete id="removeMember" parameterType="String">
+    	delete from members where userid=#{userid}
+	</delete>
+  	
+  	<!-- 하현수 0112-->
+  	<select id="getUser" resultType="Member">
+  		select * from MEMBERS where userid = #{userid}
+  	</select>
+  	
+  	<!--어드민용 메인 -->
+	<select id="adminUserList" resultType="Member">
+		SELECT * FROM(SELECT * FROM members order by idx desc )  
+      <![CDATA[
+      where ROWNUM <=5 
+      ]]>
+	</select>
+
+	<select id="adminUserList2" resultType="Member">
+		select m.*,
+		(select count(*) from com_ani_board where userid = m.userid) as board_cnt
+		from members m
+		order by m.idx desc
+
+	</select>
+
+	<!-- 회원 드롭 -->
+	<update id="dropUser">
+		UPDATE members
+		SET status = 2
+		WHERE userid = #{userid}
+	</update>
+  	
+  	<!-- 좋아요 눌렀는지 확인 -->
+	<select id="findLike" resultType="int">
+		select count(*) from user_like where user_no = #{user_no}
+	</select>
+	
+	<insert id="likeUp" parameterType="Like">
+		insert into user_like (like_no, user_no, likeNum)
+		values(like_no_seq.nextval,#{user_no},1)
+	</insert>
+	<select id="getLike" resultType="int">
+		select sum(likeNum) likeNum from user_like where board_no=#{value}
+	</select>
+	  <delete id="likeDown">
+	  	delete from user_like where user_no = #{user_no} 
+	  </delete>
+</mapper>
